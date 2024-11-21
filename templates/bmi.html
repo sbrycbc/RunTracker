@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}BMI Hesaplama{% endblock %}
+
+{% block content %}
+<h1>BMI Hesaplama</h1>
+<form method="POST">
+    <label for="height">Boy (cm):</label>
+    <input type="number" id="height" name="height" required>
+    <label for="weight">Kilo (kg):</label>
+    <input type="number" id="weight" name="weight" required>
+    <button type="submit">Hesapla</button>
+</form>
+
+{% if bmi %}
+    <p>BMI Değeriniz: {{ bmi }} - {{ status }}</p>
+{% endif %}
+{% endblock %}

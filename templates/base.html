@@ -1,24 +1,28 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}RunTracker{% endblock %}</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-        </ul>
-    </nav>
-
-    <!-- Content Area -->
-    <div>
-        {% block content %}
-        {% endblock %}
-    </div>
+    <header>
+        <nav>
+            <a href="/">Home</a>
+            <a href="/bmi">BMI Hesapla</a>
+            <a href="/tracker">Koşu Takibi</a>
+            <li><a href="https://github.com/sbrycbc/LearnPython" target="_blank">
+                GitHub Repo <i class="fab fa-github"></i>
+            </a></li>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>© 2024 RunTracker</p>
+    </footer>
 </body>
 </html>
+

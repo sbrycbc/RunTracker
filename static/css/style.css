@@ -1,33 +1,116 @@
-/* Navbar stili */
-nav {
-    background-color: #333;
-    color: white;
-    padding: 10px;
-}
-
-nav ul {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    gap: 10px;
-}
-
-nav ul li {
-    display: inline;
-}
-
-nav ul li a {
-    color: white;
-    text-decoration: none;
-}
-
-nav ul li a:hover {
-    text-decoration: underline;
-}
-
-/* İçerik alanı */
-div {
-    padding: 20px;
+/* Genel ayarlar */
+body {
     font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    /* Tüm ekranın yüksekliği */
+    display: flex;
+    flex-direction: column;
+    /* İçerik ve footer'ı dikey hizala */
 }
+
+/* Header ve Navbar */
+header {
+    background: #333;
+    /* Koyu arka plan */
+    color: #fff;
+    /* Beyaz yazı */
+    padding: 10px 0;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+header nav a {
+    color: #fff;
+    /* Beyaz yazı */
+    text-decoration: none;
+    margin: 0 15px;
+    font-size: 16px;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+header nav li {
+    list-style: none;
+    /* Liste içindeki noktaları kaldır */
+}
+
+header nav a:hover {
+    background: #575757;
+    /* Üzerine gelindiğinde gri arka plan */
+}
+
+/* GitHub ikonu */
+header nav a i {
+    margin-left: 5px;
+    /* GitHub ikonuna boşluk ekle */
+}
+
+/* Ana içerik */
+main {
+    flex: 1;
+    /* İçeriği footer'ı alta itmek için esnek yap */
+    padding: 20px;
+    background: #fff;
+    margin: 20px auto;
+    width: 90%;
+    max-width: 800px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Form düzeni */
+form {
+    display: flex;
+    flex-direction: column;
+    /* Elemanları dikey hizala */
+    align-items: center;
+    /* Yatayda ortala */
+    gap: 15px;
+    /* Elemanlar arasında boşluk */
+    margin-top: 50px;
+    /* Formu sayfanın aşağısına çek */
+}
+
+/* Buton */
+form button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+    /* Form elemanlarından biraz daha aşağıya çek */
+}
+
+form button:hover {
+    background-color: #0056b3;
+    /* Hover rengi */
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 10px 0;
+    background: #333;
+    color: #fff;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+    height: 25px;
+}
+
+footer p {
+    font-size: 10px;
+}
+
+
