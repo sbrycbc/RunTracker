@@ -1,12 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Ana Sayfa{% endblock %}
 
 {% block content %}
-<h1>RunTracker</h1>
-<p>Koşu hedeflerinizi planlayin, takip edin ve başariya ulaşin!</p>
+    <h1>Hoşgeldiniz!</h1>
+    <p>RunTracker'a hoşgeldiniz! Koşu hedeflerinizi buradan takip edebilirsiniz.</p>
 
+    <h3>Bugünün Hava Durumunu Görmek İçin <strong>Buraya Tiklayin</strong>:</h3>
+
+    <!-- Hava durumu butonu ve ikonu -->
+    <form method="POST">
+        <button type="submit" name="show_weather" value="true" style="background-color: transparent; border: none;">
+            <i class="fas fa-cloud-sun" style="font-size: 30px; color: #ff9800;"></i> Buraya Tiklayin
+        </button>
+    </form>
+
+    {% if request.method == 'POST' and request.form.get('show_weather') %}
+        <!-- Şehir girme formu -->
+        <form method="POST">
+            <label for="city">Şehir Girin:</label>
+            <input type="text" id="city" name="city" required>
+            <button type="submit">Hava Durumunu Gör</button>
+        </form>
+    {% endif %}
+
+    {% if temperature %}
+        <h4>Şehir: {{ city }}</h4>
+        <p>Sicaklik: {{ temperature }}°C</p>
+        <p>Hava Durumu: {{ weather_description }}</p>
+        <p><strong>{{ suggestion }}</strong></p>
+
+        <!-- Tamam Butonu -->
+        <form action="/" method="get">
+            <button type="submit">Tamam</button>
+        </form>
+    {% endif %}
 {% endblock %}
+
+
 
 
 
