@@ -7,10 +7,10 @@
 
 <h3>Toplam Veriler</h3>
 <ul>
-    <li>Toplam Mesafe: {{ total_distance }} km</li>
-    <li>Toplam Süre: {{ total_duration }} dakika</li>
-    <li>Toplam Kalori: {{ total_calories }}</li>
-    <li>Ortalama Hiz: {{ average_speed }} km/saat</li>
+    <li><strong>Toplam Mesafe:</strong> {{ total_distance }} km</li>
+    <li><strong>Toplam Süre:</strong> {{ total_duration }} dakika</li>
+    <li><strong>Toplam Kalori:</strong> {{ total_calories }}</li>
+    <li><strong>Ortalama Hiz:</strong> {{ average_speed }} km/saat</li>
 </ul>
 
 {% if longest_run %}
@@ -44,8 +44,9 @@
     <p>Henüz koşu verisi bulunmuyor.</p>
 {% endif %}
 
-<a href="/tracker" class="btn btn-primary" style="margin-top: 20px;">Geri Dön</a>
+<a href="/" class="btn btn-primary" style="margin-top: 20px;">Geri Dön</a>
 {% endblock %}
+
 
 
 

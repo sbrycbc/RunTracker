@@ -72,6 +72,7 @@ def bmi():
         return render_template('bmi.html', bmi=bmi, status=status)
     return render_template('bmi.html')
 
+
 # Koşu takibi
 @app.route('/tracker', methods=['GET', 'POST'])
 def tracker():
@@ -82,10 +83,10 @@ def tracker():
         calories = float(request.form['calories'])
 
         # Hız hesaplama
-        speed = round(distance / (duration / 60), 2)
+        speed = round(distance / (duration / 60), 2)  # km/saat cinsinden hız
 
         # Motivasyon mesajları
-        motivation = random.choice([
+        motivation = random.choice([ 
             "Harika gidiyorsun! Aynen devam et!",
             "Bugün küçük bir adim at, yarin büyük bir hedefe ulaş!",
             "Koşmaya devam et, hedeflerine bir adim daha yaklaştin!"
@@ -95,12 +96,42 @@ def tracker():
         run_logs.append({
             "distance": distance,
             "duration": duration,
-            "calories": calories
+            "calories": calories,
+            "speed": speed
         })
 
-        return render_template('tracker.html', distance=distance, duration=duration, calories=calories, speed=speed, motivation=motivation)
+        # Koşu analizini yap
+        analysis = analyze_performance(run_logs)
+
+        return render_template('tracker.html', distance=distance, duration=duration, calories=calories, speed=speed, motivation=motivation, analysis=analysis)
 
     return render_template('tracker.html')
+
+
+# Performans analiz fonksiyonu
+def analyze_performance(run_logs):
+    # Toplam mesafe, süre ve hız
+    total_distance = sum(log["distance"] for log in run_logs)
+    total_duration = sum(log["duration"] for log in run_logs)
+    total_speed = sum(log["speed"] for log in run_logs) / len(run_logs) if run_logs else 0
+
+    # En hızlı koşu
+    fastest_run = max(run_logs, key=lambda log: log["speed"], default=None)
+    fastest_speed = fastest_run["speed"] if fastest_run else 0
+
+    # Ortalama hız
+    average_speed = round(total_distance / (total_duration / 60), 2) if total_duration > 0 else 0
+
+    # Mesafe gelişimi: Son 3 koşunun mesafelerini topla
+    recent_distance = sum(log["distance"] for log in run_logs[-3:])
+
+    return {
+        "total_distance": total_distance,
+        "total_duration": total_duration,
+        "average_speed": average_speed,
+        "fastest_speed": fastest_speed,
+        "recent_distance": recent_distance
+    }
 
 
 # Hava durumu için fonksiyon
@@ -117,8 +148,9 @@ def get_weather(city):
         return temperature, weather_description
     else:
         return None, None
-    
-# Performans ozeti sayfasi
+
+
+# Performans özet sayfası
 @app.route('/performance', methods=['GET'])
 def performance():
     global run_logs  # Global değişkeni kullanacağımızı belirtin
@@ -143,6 +175,7 @@ def performance():
         average_speed=average_speed,
         longest_run=longest_run,
     )
+
 
 if __name__ == "__main__":
     app.run(debug=True)
