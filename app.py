@@ -13,6 +13,10 @@ load_dotenv()
 API_KEY = os.getenv('API_KEY')
 BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
+# Global koşu verisi listesi
+run_logs = []  # Kullanıcıların koşu verilerini tutacak liste
+
+
 # Ana sayfa
 @app.route('/', methods=['GET', 'POST'])
 def home():
@@ -71,20 +75,33 @@ def bmi():
 # Koşu takibi
 @app.route('/tracker', methods=['GET', 'POST'])
 def tracker():
+    global run_logs
     if request.method == 'POST':
-        distance = request.form['distance']
-        duration = request.form['duration']
-        calories = request.form['calories']
-        # Hedef hız önerisi (örnek: 10 km/saat)
-        speed = round(float(distance) / (float(duration) / 60), 2)
+        distance = float(request.form['distance'])
+        duration = float(request.form['duration'])
+        calories = float(request.form['calories'])
+
+        # Hız hesaplama
+        speed = round(distance / (duration / 60), 2)
+
+        # Motivasyon mesajları
         motivation = random.choice([
             "Harika gidiyorsun! Aynen devam et!",
             "Bugün küçük bir adim at, yarin büyük bir hedefe ulaş!",
             "Koşmaya devam et, hedeflerine bir adim daha yaklaştin!"
         ])
+
+        # Kullanıcının koşu verilerini listeye ekle
+        run_logs.append({
+            "distance": distance,
+            "duration": duration,
+            "calories": calories
+        })
+
         return render_template('tracker.html', distance=distance, duration=duration, calories=calories, speed=speed, motivation=motivation)
 
     return render_template('tracker.html')
+
 
 # Hava durumu için fonksiyon
 def get_weather(city):
@@ -100,6 +117,32 @@ def get_weather(city):
         return temperature, weather_description
     else:
         return None, None
+    
+# Performans ozeti sayfasi
+@app.route('/performance', methods=['GET'])
+def performance():
+    global run_logs  # Global değişkeni kullanacağımızı belirtin
+
+    # Toplam değerler
+    total_distance = sum(log["distance"] for log in run_logs)
+    total_duration = sum(log["duration"] for log in run_logs)
+    total_calories = sum(log["calories"] for log in run_logs)
+
+    # Ortalama hız
+    average_speed = round(total_distance / (total_duration / 60), 2) if total_duration > 0 else 0
+
+    # En uzun koşu
+    longest_run = max(run_logs, key=lambda log: log["distance"], default=None)
+
+    return render_template(
+        "performance.html",
+        run_logs=run_logs,
+        total_distance=total_distance,
+        total_duration=total_duration,
+        total_calories=total_calories,
+        average_speed=average_speed,
+        longest_run=longest_run,
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)

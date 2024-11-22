@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Performans Özeti{% endblock %}
+
+{% block content %}
+<h1>Performans Özeti</h1>
+
+<h3>Toplam Veriler</h3>
+<ul>
+    <li>Toplam Mesafe: {{ total_distance }} km</li>
+    <li>Toplam Süre: {{ total_duration }} dakika</li>
+    <li>Toplam Kalori: {{ total_calories }}</li>
+    <li>Ortalama Hiz: {{ average_speed }} km/saat</li>
+</ul>
+
+{% if longest_run %}
+    <h3>En Uzun Koşu</h3>
+    <p>
+        Mesafe: {{ longest_run.distance }} km, Süre: {{ longest_run.duration }} dakika, Kalori: {{ longest_run.calories }}
+    </p>
+{% endif %}
+
+<h3>Koşu Kayitlari</h3>
+{% if run_logs %}
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Mesafe (km)</th>
+                <th>Süre (dakika)</th>
+                <th>Kalori</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in run_logs %}
+                <tr>
+                    <td>{{ log.distance }}</td>
+                    <td>{{ log.duration }}</td>
+                    <td>{{ log.calories }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% else %}
+    <p>Henüz koşu verisi bulunmuyor.</p>
+{% endif %}
+
+<a href="/tracker" class="btn btn-primary" style="margin-top: 20px;">Geri Dön</a>
+{% endblock %}
+
+
+
