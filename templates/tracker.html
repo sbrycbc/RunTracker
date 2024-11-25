@@ -3,7 +3,15 @@
 {% block title %}Kosu Takibi{% endblock %}
 
 {% block content %}
-<h1>Koşu Takibi</h1>
+<div class="info">
+  <h1>Koşu Takibi</h1>
+  <p>RunTracker ile hedeflerinizi takip edin ve ilerlemenizi görmek için motivasyonunuzu koruyun.</br>
+    Hedeflerinize ulaşmak hiç bu kadar kolay olmamıştı. Her adımda sizi destekliyoruz.</br>
+    Koşu antrenmanlarınıza dair her şeyi burada takip edebilirsiniz.</br>
+    Başarı için ilk adımı atın!</br>
+  </p>
+</div>
+
 <form method="POST">
     <label for="distance">Mesafe (km):</label>
     <input type="number" id="distance" name="distance" required>
@@ -15,12 +23,22 @@
 </form>
 
 {% if distance %}
-    <p>Koştuğunuz Mesafe: {{ distance }} km</p>
-    <p>Koşu Süresi: {{ duration }} dakika</p>
-    <p>Hiziniz: {{ speed }} km/saat</p>
-    <p>Motivasyon: {{ motivation }}</p>
+<div class="sonuc">
+    <p>
+        *** Bugünkü Kosunuzun Özeti *** </br> 
+    - Koştuğunuz Mesafe: {{ distance }} km </br>
+    - Koşu Süresi: {{ duration }} dakika </br>
+    - Hiziniz: {{ speed }} km/saat 
+    </p>
+    <span>
+    {{ motivation }}
+    </span>
+   
+</div>
 
    <!-- Performans Özetine Yönlendirme Butonu -->
-    <a href="/performance" class="btn btn-primary" style="margin-top: 20px;">Performans Özetini Gör</a>
+<div class="performans">
+    <a href="/performance">Tüm Kosu Özetlerin Burada</a>
+</div>
 {% endif %}
 {% endblock %}

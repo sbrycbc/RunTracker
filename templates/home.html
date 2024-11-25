@@ -3,43 +3,47 @@
 {% block title %}Ana Sayfa{% endblock %}
 
 {% block content %}
-    <h1>Hoşgeldiniz!</h1>
-    <p>RunTracker'a hoşgeldiniz! Koşu hedeflerinizi buradan takip edebilirsiniz.</p>
+<div class="container">
+    <!-- Sol Taraf: Hero Bölümü -->
+    <div class="left-section">
+        <div class="hero">
+            <h1>Hoşgeldiniz!</h1>
+            <p>Sağlikli yaşam ve koşu hedeflerinize ulaşmak için doğru adrestesiniz!<br>
+            Sadece bir adım atmanız yeterli 🏃‍♂️🏃‍♂️</p>
+            <h2>Sonrasinda...</h2>
+            <p>Hedeflerinizi ve antrenmanlarınızı düzenli olarak <br>
+            Koşu takibi sayfasından takip edebilirsiniz! <br>
+            Her adımda ne kadar çok geliştiğinizi görebilirsiniz🌟</br>
+            Vücut Kitle İndeksinizi BMI Hesapla sayfasindan hesaplayın </br>
+            Sağlıklı Hedeflere Ulaşın🍀
+            </p>
+            <span>Hadi başlayalım🎶</span>
+        </div>
+    </div>
 
-    <h3>Bugünün Hava Durumunu Görmek İçin <strong>Buraya Tiklayin</strong>:</h3>
+    <!-- Sağ Taraf: Hava Durumu ve Performans Bölümü -->
+    <div class="right-section">
+        <div class="weather-section">
+            <h3>Bugün dışarıda koşmak için mükemmel bir gün olabilir.</br>
+                 Hadi öğrenelim ve dışarı çıkalım!</h3>
+            <!-- Hava durumu sayfasına yönlendirme butonu -->
+            <a href="/weather">
+                <i class="fas fa-cloud-sun" style="font-size: 20px; margin-right: 10px;"></i> 
+            </a>
+        </div>
 
-    <!-- Hava durumu butonu ve ikonu -->
-    <form method="POST">
-        <button type="submit" name="show_weather" value="true" style="background-color: transparent; border: none;">
-            <i class="fas fa-cloud-sun" style="font-size: 30px; color: #ff9800;"></i> Buraya Tiklayin
-        </button>
-    </form>
-
-    {% if request.method == 'POST' and request.form.get('show_weather') %}
-        <!-- Şehir girme formu -->
-        <form method="POST">
-            <label for="city">Şehir Girin:</label>
-            <input type="text" id="city" name="city" required>
-            <button type="submit">Hava Durumunu Gör</button>
-        </form>
-    {% endif %}
-
-    {% if temperature %}
-        <h4>Şehir: {{ city }}</h4>
-        <p>Sicaklik: {{ temperature }}°C</p>
-        <p>Hava Durumu: {{ weather_description }}</p>
-        <p><strong>{{ suggestion }}</strong></p>
-
-        <!-- Tamam Butonu -->
-        <form action="/" method="get">
-            <button type="submit">Tamam</button>
-        </form>
-    {% endif %}
-
-    <!-- Performans Ozetine Gecis -->
-    <h3>Koşu Performansiniz Görmek İçin:</h3>
-    <a href="/performance" class="btn btn-primary">Performans Özeti</a>
+        <div class="performance-section" style="margin-top: 40px;">
+            <h3>Koşu Performansınızı Görmek İçin:</h3>
+            <!-- Performans sayfasına yönlendirme butonu -->
+            <a href="/performance">
+                <i class="fas fa-running" style="font-size: 20px; margin-right: 10px;"></i>
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}
+
+
 
 
 

@@ -14,42 +14,59 @@ API_KEY = os.getenv('API_KEY')
 BASE_URL = 'https://api.openweathermap.org/data/2.5/weather'
 
 # Global koşu verisi listesi
-run_logs = []  # Kullanıcıların koşu verilerini tutacak liste
+run_logs = []
 
+# Hava durumu verisini alma fonksiyonu
+def get_weather(city):
+    """Şehir adını kullanarak API'den hava durumu verisi çeker."""
+    url = f"{BASE_URL}?q={city}&appid={API_KEY}&units=metric&lang=tr"
+    response = requests.get(url)
+    data = response.json()
+
+    if data.get("cod") != "404":
+        temperature = data["main"]["temp"]
+        weather_description = data["weather"][0]["description"].title()
+        return temperature, weather_description
+    return None, None
+
+# Hava durumu önerisi belirleme fonksiyonu
+def get_weather_suggestion(temperature):
+    """Sıcaklığa göre koşu önerisi döner."""
+    if temperature > 25:
+        return "Bugün hava sıcak, hafif tempoda koşmayı düşünün!"
+    elif 15 <= temperature <= 25:
+        return "Koşu için harika bir gün!"
+    else:
+        return "Hava soğuk, sıcak kalmayı unutmayın!"
 
 # Ana sayfa
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/', methods=['GET'])
 def home():
+    """Ana sayfa: Hoşgeldiniz mesajı ve yönlendirme bağlantıları içerir."""
+    return render_template('home.html')
+
+# Hava durumu sayfası
+@app.route('/weather', methods=['GET', 'POST'])
+def weather():
+    """Hava durumu sayfası: Kullanıcının girdiği şehir için hava durumu verir."""
+    city = None
     temperature = None
     weather_description = None
     suggestion = None
-    city = None
 
-    if request.method == 'POST':
-        if 'show_weather' in request.form:  # Hava durumu formu tıklama
-            return render_template('home.html', show_weather_form=True)
-        elif 'city' in request.form:  # Şehir girildiyse hava durumu al
-            city = request.form['city']
-            city = city.capitalize()  # Şehir ismini ilk harfini büyük yapmak için
+    if request.method == 'POST':  # Şehir bilgisi gönderilmişse
+        city = request.form.get('city')  # Kullanıcının girdiği şehir adı
+
+        if city:  # Eğer şehir boş değilse hava durumu alınır
+            city = city.strip().title()
             temperature, weather_description = get_weather(city)
 
-            # Hava durumu açıklamasını düzenle
-            if weather_description:
-                weather_description = weather_description.title()
+            if temperature is not None:  # Geçerli veri varsa öneri oluştur
+                suggestion = get_weather_suggestion(temperature)
+            else:
+                suggestion = "Geçersiz bir şehir adı girdiniz. Lütfen tekrar deneyin."
 
-            # Hava durumu önerisi
-            if temperature is not None:
-                if temperature < 10:
-                    suggestion = "Bugün hava soğuk, kalin giyin!"
-                elif temperature > 30:
-                    suggestion = "Bugün hava çok sicak, hafif giyinin!"
-                else:
-                    suggestion = "Bugün hava güzel, rahatça kosmaya çikabilirsiniz."
-            
-            return render_template('home.html', temperature=temperature, weather_description=weather_description, suggestion=suggestion, city=city)
-
-    return render_template('home.html', show_weather_form=False)
-
+    return render_template('weather.html', temperature=temperature, weather_description=weather_description, suggestion=suggestion, city=city)
 
 # BMI Hesaplama
 @app.route('/bmi', methods=['GET', 'POST'])
@@ -61,17 +78,16 @@ def bmi():
 
         # BMI durumu
         if bmi < 18.5:
-            status = "Zayif"
+            status = "Sonuçlarınız, BMI'nizin düşük olduğunu gösteriyor."
         elif 18.5 <= bmi < 24.9:
-            status = "Normal"
+            status = "Harika! BMI'niz sağlıklı bir aralıkta."
         elif 25 <= bmi < 29.9:
-            status = "Fazla Kilolu"
+            status = "Sonuçlarınız, BMI'nizin biraz yüksek olduğunu gösteriyor."
         else:
-            status = "Obez"
-
+            status = "Sonuçlarınız, BMI'nizin obezite seviyesinde olduğunu gösteriyor."
+            
         return render_template('bmi.html', bmi=bmi, status=status)
     return render_template('bmi.html')
-
 
 # Koşu takibi
 @app.route('/tracker', methods=['GET', 'POST'])
@@ -86,10 +102,10 @@ def tracker():
         speed = round(distance / (duration / 60), 2)  # km/saat cinsinden hız
 
         # Motivasyon mesajları
-        motivation = random.choice([ 
+        motivation = random.choice([
             "Harika gidiyorsun! Aynen devam et!",
-            "Bugün küçük bir adim at, yarin büyük bir hedefe ulaş!",
-            "Koşmaya devam et, hedeflerine bir adim daha yaklaştin!"
+            "Bugün küçük bir adım at, yarın büyük bir hedefe ulaş!",
+            "Koşmaya devam et, hedeflerine bir adım daha yaklaştın!"
         ])
 
         # Kullanıcının koşu verilerini listeye ekle
@@ -106,7 +122,6 @@ def tracker():
         return render_template('tracker.html', distance=distance, duration=duration, calories=calories, speed=speed, motivation=motivation, analysis=analysis)
 
     return render_template('tracker.html')
-
 
 # Performans analiz fonksiyonu
 def analyze_performance(run_logs):
@@ -133,23 +148,6 @@ def analyze_performance(run_logs):
         "recent_distance": recent_distance
     }
 
-
-# Hava durumu için fonksiyon
-def get_weather(city):
-    url = f"{BASE_URL}?q={city}&appid={API_KEY}&units=metric&lang=tr"  # 'units=metric' sıcaklığı Celsius cinsinden alır
-    response = requests.get(url)
-    data = response.json()
-
-    if data["cod"] != "404":
-        main_data = data["main"]
-        weather_data = data["weather"][0]
-        temperature = main_data["temp"]
-        weather_description = weather_data["description"]
-        return temperature, weather_description
-    else:
-        return None, None
-
-
 # Performans özet sayfası
 @app.route('/performance', methods=['GET'])
 def performance():
@@ -175,7 +173,6 @@ def performance():
         average_speed=average_speed,
         longest_run=longest_run,
     )
-
 
 if __name__ == "__main__":
     app.run(debug=True)

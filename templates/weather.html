@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Hava Durumu{% endblock %}
+
+{% block content %}
+<div class="info">
+    <h1>Bugünün Hava Durumu</h1>
+</div>
+
+{% if not city %}
+<div class="hava-durumu">
+    <h3>Bugünün hava durumunu öğren ve koşu planını buna göre şekillendir!</br>
+        Yağmurda mı, güneşte mi koşacaksın? Hemen öğren ve hazırlık yap!</br>
+        Hava nasıl olursa olsun, koşmak için bir neden bulabilirsin 🌤️🏃</h3>
+</div>
+
+    <form method="POST">
+        <button type="submit" name="show_weather" value="true">
+            <i class="fas fa-cloud-sun" style="font-size: 30px; color: #ff9800;"></i> Buraya Tıklayın
+        </button>
+    </form>
+
+    {% if request.method == 'POST' and request.form.get('show_weather') %}
+        <form method="POST">
+            <label for="city">Şehir Girin:</label>
+            <input type="text" id="city" name="city" required>
+            <button type="submit">Hava Durumunu Gör</button>
+        </form>
+    {% endif %}
+
+{% else %}
+<div class="hava-durumu">
+    <!-- Hava durumu verisi gösterimi -->
+    <h4>Şehir: {{ city }}</h4>
+    <p>Sıcaklık: {{ temperature }}°C</p>
+    <p>Hava Durumu: {{ weather_description }}</p>
+    <p><strong>{{ suggestion }}</strong></p>
+</div>
+    <!-- Tamam Butonu -->
+    <form action="/" method="get">
+        <button type="submit">Tamam</button>
+    </form>
+{% endif %}
+
+{% endblock %}
+
+

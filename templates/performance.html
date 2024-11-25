@@ -3,23 +3,29 @@
 {% block title %}Performans Özeti{% endblock %}
 
 {% block content %}
-<h1>Performans Özeti</h1>
-
-<h3>Toplam Veriler</h3>
-<ul>
-    <li><strong>Toplam Mesafe:</strong> {{ total_distance }} km</li>
-    <li><strong>Toplam Süre:</strong> {{ total_duration }} dakika</li>
-    <li><strong>Toplam Kalori:</strong> {{ total_calories }}</li>
-    <li><strong>Ortalama Hiz:</strong> {{ average_speed }} km/saat</li>
-</ul>
+<div class="info">
+   <h1>Performans Özeti</h1>
+</div>
+<div class="veriler">
+    <h3>Toplam Veriler</h3>
+    <ul>
+        <li><strong>Toplam Mesafe:</strong> {{ total_distance }} km</li>
+        <li><strong>Toplam Süre:</strong> {{ total_duration }} dakika</li>
+        <li><strong>Toplam Kalori:</strong> {{ total_calories }}</li>
+         <li><strong>Ortalama Hiz:</strong> {{ average_speed }} km/saat</li>
+    </ul>
+</div>
 
 {% if longest_run %}
+<div class="veriler">
     <h3>En Uzun Koşu</h3>
     <p>
         Mesafe: {{ longest_run.distance }} km, Süre: {{ longest_run.duration }} dakika, Kalori: {{ longest_run.calories }}
     </p>
+</div>
 {% endif %}
 
+<div class="veriler">
 <h3>Koşu Kayitlari</h3>
 {% if run_logs %}
     <table border="1">
@@ -43,8 +49,10 @@
 {% else %}
     <p>Henüz koşu verisi bulunmuyor.</p>
 {% endif %}
-
-<a href="/" class="btn btn-primary" style="margin-top: 20px;">Geri Dön</a>
+</div>
+<div class="performance">
+<a href="/" >Geri Dön</a>
+</div>
 {% endblock %}
 
 
