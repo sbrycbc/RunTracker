@@ -18,7 +18,6 @@ run_logs = []
 
 # Hava durumu verisini alma fonksiyonu
 def get_weather(city):
-    """Şehir adını kullanarak API'den hava durumu verisi çeker."""
     url = f"{BASE_URL}?q={city}&appid={API_KEY}&units=metric&lang=tr"
     response = requests.get(url)
     data = response.json()
@@ -31,24 +30,21 @@ def get_weather(city):
 
 # Hava durumu önerisi belirleme fonksiyonu
 def get_weather_suggestion(temperature):
-    """Sıcaklığa göre koşu önerisi döner."""
     if temperature > 25:
         return "Bugün hava sıcak, hafif tempoda koşmayı düşünün!"
     elif 15 <= temperature <= 25:
         return "Koşu için harika bir gün!"
     else:
-        return "Hava soğuk, sıcak kalmayı unutmayın!"
+        return "Hava soğuk, kalin giyinmeyi unutmayın!"
 
 # Ana sayfa
 @app.route('/', methods=['GET'])
 def home():
-    """Ana sayfa: Hoşgeldiniz mesajı ve yönlendirme bağlantıları içerir."""
     return render_template('home.html')
 
 # Hava durumu sayfası
 @app.route('/weather', methods=['GET', 'POST'])
 def weather():
-    """Hava durumu sayfası: Kullanıcının girdiği şehir için hava durumu verir."""
     city = None
     temperature = None
     weather_description = None
@@ -105,7 +101,14 @@ def tracker():
         motivation = random.choice([
             "Harika gidiyorsun! Aynen devam et!",
             "Bugün küçük bir adım at, yarın büyük bir hedefe ulaş!",
-            "Koşmaya devam et, hedeflerine bir adım daha yaklaştın!"
+            "Koşmaya devam et, hedeflerine bir adım daha yaklaştın!",
+            "Bugün koştuğun mesafe, yarının gücüdür!",
+            "Ufak adımlar büyük başarılara götürür. Koşmaya devam et!",
+            "Hedeflerin için sadece bir koşu uzaktasın!",
+            "Zihnin 'dur' dediğinde, bedenin 'biraz daha' diyebilir.",
+            "Koşarken ayakların yorulsa bile ruhun hep özgür olsun!",
+            "Bazen yavaş koş, bazen hızlı; ama her zaman ilerle.",
+            "Bir maraton bir adımla başlar, bir efsane azimle doğar!"
         ])
 
         # Kullanıcının koşu verilerini listeye ekle

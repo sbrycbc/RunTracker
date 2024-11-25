@@ -20,7 +20,7 @@ header {
 
 header nav {
     display: flex;
-    justify-content: center;
+    justify-content: end;
     align-items: center;
 }
 
@@ -233,7 +233,7 @@ main .performans {
 }
 
 main .performans a{
-    color: #751010;
+    color:white;
     text-decoration: none;
     font-family: "Sour Gummy", sans-serif;
     padding: 8px;
@@ -241,6 +241,11 @@ main .performans a{
     background-color: rgba(12, 12, 12, 0.6);
     border-radius:8px;
 }
+main .performans a:hover{
+    color: #bdbd33;
+}
+
+
 main .performance {
     margin: 20px 0 20px 175px;
 }
