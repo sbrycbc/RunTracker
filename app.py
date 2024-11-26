@@ -50,14 +50,14 @@ def weather():
     weather_description = None
     suggestion = None
 
-    if request.method == 'POST':  # Şehir bilgisi gönderilmişse
-        city = request.form.get('city')  # Kullanıcının girdiği şehir adı
+    if request.method == 'POST':  
+        city = request.form.get('city') 
 
-        if city:  # Eğer şehir boş değilse hava durumu alınır
+        if city:  
             city = city.strip().title()
             temperature, weather_description = get_weather(city)
 
-            if temperature is not None:  # Geçerli veri varsa öneri oluştur
+            if temperature is not None: 
                 suggestion = get_weather_suggestion(temperature)
             else:
                 suggestion = "Geçersiz bir şehir adı girdiniz. Lütfen tekrar deneyin."

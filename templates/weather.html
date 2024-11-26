@@ -14,19 +14,12 @@
         Hava nasıl olursa olsun, koşmak için bir neden bulabilirsin 🌤️🏃</h3>
 </div>
 
-    <form method="POST">
-        <button type="submit" name="show_weather" value="true">
-           ☀️ 💨 🌡️ ⛈️ 🌤️ ❄️
-        </button>
-    </form>
-
-    {% if request.method == 'POST' and request.form.get('show_weather') %}
-        <form method="POST">
-            <label for="city">Şehir Girin:</label>
-            <input type="text" id="city" name="city" required>
-            <button type="submit">Hava Durumunu Gör</button>
-        </form>
-    {% endif %}
+<!-- Şehir Girme Formu -->
+<form method="POST">
+    <label for="city">Şehir Girin:</label>
+    <input type="text" id="city" name="city" placeholder="Şehir adı..." required>
+    <button type="submit">Hava Durumunu Gör</button>
+</form>
 
 {% else %}
 <div class="hava-durumu">
@@ -36,12 +29,12 @@
     <p>Hava Durumu: {{ weather_description }}</p>
     <p><strong>{{ suggestion }}</strong></p>
 </div>
-    <!-- Tamam Butonu -->
-    <form action="/" method="get">
-        <button type="submit">Tamam</button>
-    </form>
+
+<!-- Ana Sayfaya Dön Butonu -->
+</div>
+<div class="performance">
+<a href="/" >Geri Dön</a>
+</div>
 {% endif %}
 
 {% endblock %}
-
-
