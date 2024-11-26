@@ -10,15 +10,23 @@
 </head>
 <body>
     <header>
-        <nav>
-            <a href="/">Home</a>
-            <a href="/bmi">BMI Hesapla</a>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/bmi">BMI Hesapla</a>
+        <li><a href="https://github.com/sbrycbc/LearnPython" target="_blank">Docs</a></li>
+        
+        {% if session.get('logged_in') %}
+            <!-- Kullanıcı giriş yaptıysa Logout bağlantısını göster -->
             <a href="/tracker">Koşu Takibi</a>
-            <li><a href="https://github.com/sbrycbc/LearnPython" target="_blank">
-                Docs</i>
-            </a></li>
-        </nav>
-    </header>
+            <a href="/logout">Çıkış Yap</a>
+        {% else %}
+            <!-- Kullanıcı giriş yapmadıysa Login ve Register bağlantılarını göster -->
+            <a href="/login">Giriş Yap</a>
+            <a href="/register">Kayıt Ol</a>
+        {% endif %}
+    </nav>
+</header>
+
     <main>
         {% block content %}{% endblock %}
     </main>

@@ -13,18 +13,18 @@ Bu uygulama, Python kursu kapsamında geliştirilen bir projedir. Kullanıcılar
 
  #### Özellikler
 
-1. Hava Durumu
+#### 🌞🌤️☁️🌧️Hava Durumu
  - Kullanıcının seçtiği şehir için güncel sıcaklık ve hava durumu bilgisi.
  - Hava koşullarına uygun koşu önerileri.
  - Şehir adını küçük harflerle girseniz bile otomatik olarak düzeltilir.
- 2. BMI Hesaplama
+####  📊⚖️ BMI Hesaplama
  - Kullanıcının boy ve kilosuna göre BMI değerini hesaplar.
  - BMI değerine göre sağlıklı kilo durumu hakkında bilgi verir.
-3. Koşu Takibi
+####  🏃‍♂️👏🏃‍♀️ Koşu Takibi
 - Koşu mesafesi, süresi ve yakılan kalori bilgilerini kaydetme.
 - Ortalama hız, toplam mesafe ve en hızlı koşu gibi analizler sunar.
  - Kullanıcıyı motive edecek rastgele motivasyon cümleleri sunar.
-4. Performans Özeti
+####  💪🔝🌟Performans Özeti
  - Toplam koşulan mesafe, süre ve yakılan kalori.
  - En uzun mesafeli koşunun bilgileri.
  - Ortalama hız ve son koşu performanslarının analizi.

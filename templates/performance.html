@@ -12,7 +12,7 @@
         <li><strong>Toplam Mesafe:</strong> {{ total_distance }} km</li>
         <li><strong>Toplam Süre:</strong> {{ total_duration }} dakika</li>
         <li><strong>Toplam Kalori:</strong> {{ total_calories }}</li>
-         <li><strong>Ortalama Hiz:</strong> {{ average_speed }} km/saat</li>
+        <li><strong>Ortalama Hiz:</strong> {{ average_speed }} dakika/km</li>
     </ul>
 </div>
 
@@ -34,6 +34,7 @@
                 <th>Mesafe (km)</th>
                 <th>Süre (dakika)</th>
                 <th>Kalori</th>
+                
             </tr>
         </thead>
         <tbody>
@@ -42,6 +43,7 @@
                     <td>{{ log.distance }}</td>
                     <td>{{ log.duration }}</td>
                     <td>{{ log.calories }}</td>
+                    
                 </tr>
             {% endfor %}
         </tbody>
@@ -54,7 +56,3 @@
 <a href="/" >Geri Dön</a>
 </div>
 {% endblock %}
-
-
-
-

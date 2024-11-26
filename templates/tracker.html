@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="info">
-  <h1>Koşu Takibi</h1>
+  <h1>Hoş Geldin, {{ username }}!</h1>
   <p>RunTracker ile hedeflerinizi takip edin ve ilerlemenizi görmek için motivasyonunuzu koruyun.</br>
     Hedeflerinize ulaşmak hiç bu kadar kolay olmamıştı. Her adımda sizi destekliyoruz.</br>
     Koşu antrenmanlarınıza dair her şeyi burada takip edebilirsiniz.</br>
@@ -22,6 +22,12 @@
     <button type="submit">Gönder</button>
 </form>
 
+
+   <!-- Performans Özetine Yönlendirme Butonu -->
+<div class="performans-right">
+    <a href="/performance">Tüm Kosu Özetlerin Burada</a>
+</div>
+
 {% if distance %}
 <div class="sonuc">
     <p>
@@ -33,12 +39,9 @@
     <span>
     {{ motivation }}
     </span>
-   
 </div>
-
-   <!-- Performans Özetine Yönlendirme Butonu -->
-<div class="performans">
-    <a href="/performance">Tüm Kosu Özetlerin Burada</a>
+<div>
+    <a href="/performance"></a>
 </div>
 {% endif %}
 {% endblock %}

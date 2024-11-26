@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+    <h1>Kullanıcılar Listesi</h1>
+    <table border="1">
+        <tr>
+            <th>Ad Soyad</th>
+            <th>E-posta</th>
+        </tr>
+        {% for user in users %}
+        <tr>
+            <td>{{ user[0] }}</td>
+            <td>{{ user[1] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    <br>
+    <a href="/">Ana Sayfa</a>
+{% endblock %}

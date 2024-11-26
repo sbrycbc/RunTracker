@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+<div class="info">
+    <h1>Yeni Kullanıcı Kayıt</h1>
+</div>
+    <form method="POST">
+        <label for="username">Kullanıcı Adı:</label>
+        <input type="text" id="username" name="username" required>
+        <br><br>
+        <label for="name">Ad Soyad:</label>
+        <input type="text" id="name" name="name" required>
+        <br><br>
+        <label for="email">E-posta:</label>
+        <input type="email" id="email" name="email" required>
+        <br><br>
+        <label for="password">Şifre:</label>
+        <input type="password" id="password" name="password" required>
+        <br><br>
+
+        <label for="password_confirm">Şifre Tekrarı:</label>
+        <input type="password" id="password_confirm" name="password_confirm" required>
+        <br><br>
+
+        <button type="submit">Kaydet</button>
+
+        <br><br>
+        <br><br>
+        
+        
+        <a href="/login" style="text-decoration: none;">Zaten bir hesabınız var mı? Giriş Yapın.</a>
+    </form>
+    
+{% endblock %}
+
