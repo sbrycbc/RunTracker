@@ -30,12 +30,18 @@ def get_weather(city):
 
 # Hava durumu önerisi belirleme fonksiyonu
 def get_weather_suggestion(temperature):
-    if temperature > 25:
-        return "Bugün hava sıcak, hafif tempoda koşmayı düşünün!"
-    elif 15 <= temperature <= 25:
-        return "Koşu için harika bir gün!"
+    if temperature > 35:
+        return "Bugün hava cok sıcak, yanina bol su almayi unutmayin!!"
+    elif 25 <= temperature <= 35:
+        return "Bugün hava biraz sıcak, hafif tempoda koşmayı düşünün!!"
+    elif 15 <= temperature < 25:
+        return "Hava harika..Bu gün kacmaz!!"
+    elif 5 <= temperature <15:
+        return "Koşu için güzel bir gün!!"
+    elif 0 <= temperature < 5:
+        return "Havalar sogumaya basliyor..Ayakkabi ve kiyafetlere dikkat!!"
     else:
-        return "Hava soğuk, kalin giyinmeyi unutmayın!"
+        return "Hava soğuk, kalin giyinmeyi unutmayın!!"
 
 # Ana sayfa
 @app.route('/', methods=['GET'])
