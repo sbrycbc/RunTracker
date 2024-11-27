@@ -219,76 +219,82 @@ def bmi():
 @app.route('/tracker', methods=['GET', 'POST'])
 def tracker():
     if 'logged_in' not in session or not session['logged_in']:
-        return redirect(url_for('login'))  # Kullanıcı giriş yapmamışsa giriş sayfasına yönlendir
+        return redirect(url_for('login'))
 
-    username = session['username'].title()  # Kullanıcı adı oturumdan alınıyor
+    username = session['username'].title()
 
     # Koşu verilerini CSV'den oku ve session'a kaydet
     run_data = read_run_data_from_csv(username)
-    session['run_logs'] = run_data  # CSV'deki verileri session'a yüklüyoruz
+    session['run_logs'] = run_data
 
+    # Kullanıcı yeni veri gönderdiğinde:
     if request.method == 'POST':
-        # Formdan gelen verileri alalım
-        distance = request.form.get('distance')  # Mesafe
-        duration = request.form.get('duration')  # Süre
-        calories = request.form.get('calories')  # Kalori
+        # Formdan gelen verileri al
+        distance = request.form.get('distance')
+        duration = request.form.get('duration')
+        calories = request.form.get('calories')
 
         if distance and duration and calories:
-            distance = float(distance)
-            duration = float(duration)
-            calories = float(calories)
+            try:
+                distance = float(distance)
+                duration = float(duration)
+                calories = float(calories)
 
-            # Hız hesaplama (km/saat)
-            speed = round(duration / distance, 2)
+                # Hız hesaplama (km/saat)
+                speed = round(distance / (duration / 60), 2)  # Süreyi saat birimine çeviriyoruz
 
+                # Motivasyon mesajı seç
+                motivation = random.choice([
+                    "Harika gidiyorsun! Aynen devam et!",
+                    "Bugün küçük bir adım at, yarın büyük bir hedefe ulaş!",
+                    "Koşmaya devam et, hedeflerine bir adım daha yaklaştın!",
+                    "Bugün koştuğun mesafe, yarının gücüdür!",
+                    "Ufak adımlar büyük başarılara götürür. Koşmaya devam et!",
+                    "Hedeflerin için sadece bir koşu uzaktasın!",
+                    "Zihnin 'dur' dediğinde, bedenin 'biraz daha' diyebilir.",
+                    "Koşarken ayakların yorulsa bile ruhun hep özgür olsun!",
+                    "Bazen yavaş koş, bazen hızlı; ama her zaman ilerle.",
+                    "Bir maraton bir adımla başlar, bir efsane azimle doğar!"
+                ])
 
-            # Koşu verisini session'a kaydediyoruz
-            run_log = {
-                "distance": distance,
-                "duration": duration,
-                "calories": calories,
-                "speed": speed
-            }
+                # Veriyi CSV'ye kaydet
+                save_run_data_to_csv(username, distance, duration, calories)
 
-            # Koşu verilerini session'a ekleyelim
-            if 'run_logs' not in session:
-                session['run_logs'] = []  # Eğer run_logs yoksa başlatıyoruz.
-            session['run_logs'].append(run_log)  # Yeni koşuyu listeye ekliyoruz.
+                # Yeni veriyi template'e gönder
+                return render_template('tracker.html', username=username, distance=distance,
+                                       duration=duration, speed=speed, motivation=motivation,
+                                       run_logs=session['run_logs'])
 
-            # Koşu verilerini CSV'ye kaydedelim
-            save_run_data_to_csv(username, distance, duration, calories)
+            except ValueError:
+                return "Lütfen geçerli bir sayı giriniz", 400
 
-            # Motivasyon mesajı
-            motivation = random.choice([
-                "Harika gidiyorsun! Aynen devam et!",
-                "Bugün küçük bir adım at, yarın büyük bir hedefe ulaş!",
-                "Koşmaya devam et, hedeflerine bir adım daha yaklaştın!",
-                "Bugün koştuğun mesafe, yarının gücüdür!",
-                "Ufak adımlar büyük başarılara götürür. Koşmaya devam et!",
-                "Hedeflerin için sadece bir koşu uzaktasın!",
-                "Zihnin 'dur' dediğinde, bedenin 'biraz daha' diyebilir.",
-                "Koşarken ayakların yorulsa bile ruhun hep özgür olsun!",
-                "Bazen yavaş koş, bazen hızlı; ama her zaman ilerle.",
-                "Bir maraton bir adımla başlar, bir efsane azimle doğar!"
-            ])
-
-            # Verileri template'e gönderiyoruz
-            return render_template('tracker.html', username=username, distance=distance,
-                                   duration=duration, calories=calories, speed=speed,
-                                   motivation=motivation)
-
-        else:
-            return "Lütfen tüm alanları doldurun", 400  # Hata mesajı
-
-    # Sayfa yüklendiğinde verileri oku
+    # Kullanıcı sayfayı sadece görüntülüyorsa
     return render_template('tracker.html', username=username, run_logs=session['run_logs'])
+
+
 
 # Koşu verilerini CSV dosyasına kaydetme
 def save_run_data_to_csv(username, distance, duration, calories):
     file_name = f"{username}_run_data.csv"
+    
+    # CSV'de aynı verinin olup olmadığını kontrol edin
+    try:
+        with open(file_name, mode='r', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if len(row) >= 3:
+                    if (float(row[0]) == distance and 
+                        float(row[1]) == duration and 
+                        float(row[2]) == calories):
+                        return  # Veri zaten kaydedilmiş
+    except FileNotFoundError:
+        pass  # Eğer dosya yoksa, sorun yok, ilk kez yazılacak
+    
+    # Eğer veri bulunmadıysa yeni veri yaz
     with open(file_name, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow([distance, duration, calories])
+
 
 
 # Koşu verilerini CSV dosyasından okuma
@@ -323,7 +329,7 @@ def analyze_performance(run_logs):
     fastest_speed = fastest_run["speed"] if fastest_run else 0
 
     # Ortalama hız
-    average_speed = round(total_distance / (total_duration ), 2)  if total_duration > 0 else 0
+    average_speed = round(total_distance / (total_duration), 2)  if total_duration > 0 else 0
 
     # Mesafe gelişimi: Son 3 koşunun mesafelerini topla
     recent_distance = sum(log["distance"] for log in run_logs[-3:])
